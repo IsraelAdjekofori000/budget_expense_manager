@@ -1,0 +1,51 @@
+# Django / Python
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+
+# Virtual environment
+venv/
+env/
+.env
+
+# Django static files
+/staticfiles/
+
+# Django local settings
+local_settings.py
+
+# React / Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Compiled React files
+/build/
+/dist/
+
+# Editor files
+.vscode/
+.idea/
+
+# Dependency directories
+/.npm/
+/.cache/
+
+# Logs
+*.log
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# git commit file 
+commit.txt
