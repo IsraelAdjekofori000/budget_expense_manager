@@ -35,6 +35,7 @@ AUTH_USER_MODEL = 'user_auth.User'  # Specify the custom user model
 # Application definition
 
 INSTALLED_APPS = [
+    'guardian',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'apps.user_auth',
-    'guardian'
+    'apps.expense',
+    'apps.enterprise',
+    'apps.vendor',
 
 ]
 
