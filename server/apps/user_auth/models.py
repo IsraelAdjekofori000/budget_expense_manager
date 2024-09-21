@@ -13,32 +13,25 @@ def profile_image_upload_location(instance, filename):
 
 
 class User(AbstractUser):
-    id = models.UUIDField(default=uuid.uuid4(), primary_key=True, unique=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     email = models.EmailField(_('User active email'), unique=True)
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
-    profile = models.OneToOneField("UserProfile", verbose_name=_("user profile information"), on_delete=models.SET_NULL, null=True, related_name='user')
+    
+    bio = models.CharField(max_length=500, null=True, blank=True)
+    phone_number = models.CharField(max_length=14, null=True, blank=True)
+    profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True, null=True)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
     
     def __str__(self):
         return self.get_full_name()
-    
-
-class UserProfile(models.Model):
-    bio = models.CharField(max_length=500, null=True, blank=True)
-    phone_number = models.CharField(max_length=14, null=True, blank=True)
-    profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True, null=True)
-    
-    def __str__(self):
-        if hasattr(self, 'user'):
-            return self.user.__str__()
-        return "No associated user" 
-
+        
     def clean(self):
         super().clean()
         # TODO add check for country code  
         
         if not self.bio and not self.phone_number and not self.profile_image:
             raise ValidationError(_('At least one field (bio, phone_number, profile_image) must be filled.'))
+    

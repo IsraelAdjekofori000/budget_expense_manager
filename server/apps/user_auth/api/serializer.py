@@ -1,23 +1,16 @@
 from rest_framework import serializers
-from ..models import User, UserProfile
+from ..models import User
 
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['profile_image', 'bio', 'phone_number']
-        
-        
 
 class UserSerializer( serializers.ModelSerializer):
-    profile = ProfileSerializer()
+    # TESTED
     class Meta:
         model = User
-        fields = ['username', 'last_name', 'first_name', 'email', 'password', 'profile']
+        fields = ['id', 'username', 'last_name', 'first_name', 'email', 'password', 'profile_image', 'bio', 'phone_number']
         extra_kwargs = {
             'password': {'write_only': True},
             }
-        depth = 1
+        
         
 
 

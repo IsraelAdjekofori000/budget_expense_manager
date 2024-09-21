@@ -53,7 +53,7 @@ class Organization(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("_detail", kwargs={"pk": self.pk})
+        return reverse("organization", kwargs={"pk": self.pk})
     
     def is_admin(self, user):
         try:
@@ -104,7 +104,7 @@ class Organization(models.Model):
 class OrganizationEmployee(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='employees')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='employed_at') #TODO
-    contract_detail = models.ForeignKey('EmploymentDetail', on_delete=models.PROTECT, related_name='employee')
+    contract_detail = models.ForeignKey('EmploymentDetail', on_delete=models.PROTECT, related_name='employee') # guard
     is_admin = models.BooleanField(default=False) # TODO check if security issue exist if view is bypassed 
 
     class Meta:
