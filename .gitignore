@@ -49,3 +49,6 @@ Thumbs.db
 
 # git commit file 
 commit.txt
+
+#media files
+media/

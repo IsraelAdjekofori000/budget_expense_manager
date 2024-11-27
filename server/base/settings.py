@@ -36,6 +36,7 @@ AUTH_USER_MODEL = 'user_auth.User'  # Specify the custom user model
 
 INSTALLED_APPS = [
     'guardian',
+    'polymorphic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,8 +47,7 @@ INSTALLED_APPS = [
     # 'rest_framework_simplejwt',
     'apps.user_auth',
     # 'apps.expense',
-    # 'apps.enterprise',
-    # 'apps.vendor',
+    'apps.enterprise',
 
 ]
 
@@ -118,7 +118,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -166,7 +165,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
+GUARDIAN_GET_INIT_ANONYMOUS_USER = "apps.user_auth.utils.get_anonymous_user"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
