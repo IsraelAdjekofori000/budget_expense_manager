@@ -1,13 +1,7 @@
 from django.urls import path, re_path
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from .api.view import (
     CreateUserView,
     DetailUserView,
-    VerifyRefreshTokenView,
     EditUserView, RetrieveNotificationView, ListNotificationView, RetrieveRequestView, ListRequestView
 )
 
@@ -19,7 +13,4 @@ urlpatterns = [
     path('requests/', ListRequestView.as_view(), name='requests_list'),
     path('notification/<int:pk>/', RetrieveNotificationView.as_view(), name='retrieve_notification'),
     path('notifications/', ListNotificationView.as_view(), name='list_notification'),
-    path('verify-token/', VerifyRefreshTokenView.as_view(), name='verify_token'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Organization, OrganizationAssociateRequest, OrganizationAssociates, AssociateDetail, Department
+from ..models import Organization, OrganizationAssociateRequest, OrganizationAssociates, AssociateDetail, Category
 from ...user_auth.models import Agent, User, Vendor
 
 
@@ -122,12 +122,12 @@ class AssociateRequestSerializer(serializers.ModelSerializer):
 
 class AssociateContractSerializer(serializers.ModelSerializer):
     associate_type = serializers.SerializerMethodField(read_only=True)
-    department = serializers.PrimaryKeyRelatedField(queryset=Department.objects)
+    categories = serializers.PrimaryKeyRelatedField(queryset=Category.objects)
 
     class Meta:
         model = AssociateDetail
         fields = [
-            'id', 'department',
+            'id', 'categories',
             'role', 'associate_type',
             'is_active', 'start_date',
             'description'
@@ -160,15 +160,15 @@ class OrganizationAssociateSerializer(serializers.ModelSerializer):
 
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-==-==-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-# ---------------------- DEPARTMENT ASSOCIATE ---------------------------
+# ---------------------- CATEGORY ASSOCIATE ---------------------------
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-==-==-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-class DepartmentSerializer(serializers.ModelSerializer):
-    hod = UserOrganisationPrimaryKeyRelatedField(queryset=User.objects, include=True)  # write_only=True,
+class CategorySerializer(serializers.ModelSerializer):
+    supervisor = UserOrganisationPrimaryKeyRelatedField(queryset=User.objects, include=True)  # write_only=True,
     organization = serializers.PrimaryKeyRelatedField(queryset=Organization.objects)
 
     class Meta:
-        model = Department
+        model = Category
         fields = [
-           'id', 'organization', 'name', 'description', 'hod'
+           'id', 'organization', 'name', 'description', 'supervisor'
         ]
