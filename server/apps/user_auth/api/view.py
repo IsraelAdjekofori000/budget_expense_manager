@@ -114,16 +114,3 @@ class ListRequestView(generics.ListAPIView):
         return OrganizationAssociateRequest.objects.filter(associate=self.request.user)
 
 
-class VerifyRefreshTokenView(APIView):
-    # TESTED 
-    def post(self, request, *args, **kwargs):
-        token = self.request.data.get('refresh')
-        if not token:
-            return Response({'error': 'refresh token required'}, status=HTTP_400_BAD_REQUEST)
-
-        else:
-            try:
-                RefreshToken(token)
-                return Response({'valid': True}, status= HTTP_200_OK)
-            except TokenError:
-                return Response({'valid': False}, status= HTTP_401_UNAUTHORIZED)

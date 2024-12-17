@@ -9,9 +9,9 @@ from .api.views import (
     ListAssociateRequestView,
     DeleteAssociateRequestView,
     CreateAssociateView,
-    CreateDepartmentView,
-    RetrieveDepartmentView,
-    ListDepartmentView
+    CreateCategoryView,
+    RetrieveCategoryView,
+    ListCategoryView
 )
 
 urlpatterns = [
@@ -25,7 +25,7 @@ urlpatterns = [
     # path('<uuid:organization_id>/update-request/<int:pk>/', UpdateAssociateRequestView.as_view(), name='update_request'),
     path('<uuid:organization_id>/deny-request/<int:pk>/', DeleteAssociateRequestView.as_view(), name='delete_request'),
     path('<uuid:organization_id>/approve-request/<int:request_id>/', CreateAssociateView.as_view(), name='approve-request'),
-    path('<uuid:organization_id>/create-department/', CreateDepartmentView.as_view(), name='create-department'),
-    path('<uuid:organization_id>/departments/', ListDepartmentView.as_view(), name='list-departments'),
-    path('<uuid:organization_id>/department/<int:pk>', RetrieveDepartmentView.as_view(), name='retrieve-department'),
+    path('<uuid:organization_id>/create-category/', CreateCategoryView.as_view(), name='create-category'),
+    path('<uuid:organization_id>/categories/', ListCategoryView.as_view(), name='list-categories'),
+    path('<uuid:organization_id>/category/<int:pk>', RetrieveCategoryView.as_view(), name='retrieve-category'),
 ]

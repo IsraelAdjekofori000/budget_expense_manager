@@ -10,11 +10,11 @@ from guardian.shortcuts import assign_perm
 from base.utils import value_or_default
 
 from .serializer import (OrganizationSerializer,
-                         OrganizationAdminSerializer, DepartmentSerializer,
+                         OrganizationAdminSerializer, CategorySerializer,
                          AssociateRequestSerializer, OrganizationAssociateSerializer,
                          )
 from ..permission import IsAdmin, IsOwner
-from ..models import Organization, OrganizationAssociateRequest, Department
+from ..models import Organization, OrganizationAssociateRequest, Category
 
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-==-==-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -166,12 +166,12 @@ class DeleteAssociateRequestView(generics.DestroyAPIView):
 
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-==-==-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-# ------------------ DEPARTMENT ASSOCIATE CRUD  -----------------------
+# ------------------ Category ASSOCIATE CRUD  -----------------------
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-==-==-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
-class CreateDepartmentView(generics.CreateAPIView):
-    serializer_class = DepartmentSerializer
+class CreateCategoryView(generics.CreateAPIView):
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated, IsAdmin]
 
     def get_organization(self):
@@ -185,7 +185,9 @@ class CreateDepartmentView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         data = value_or_default(request.data.dict, request.data)[0]
         data['organization'] = self.get_organization().pk
-        data['hod'] = value_or_default(UUID, data['hod'], hex=data['hod'])[0]
+        supervisor = data.get('supervisor')
+        if supervisor:
+            data['supervisor'] = value_or_default(UUID, supervisor, hex=supervisor)[0]
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -195,18 +197,29 @@ class CreateDepartmentView(generics.CreateAPIView):
             )
 
 
-class ListDepartmentView(generics.ListAPIView):
-    serializer_class = DepartmentSerializer
+class ListCategoryView(generics.ListAPIView):
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
-        return Department.objects.filter(organization__pk=self.kwargs.get('organization_id'))
+        return Category.objects.filter(organization__pk=self.kwargs.get('organization_id'))
 
 
-class RetrieveDepartmentView(generics.RetrieveAPIView):
-    queryset = Department
-    serializer_class = DepartmentSerializer
+class RetrieveCategoryView(generics.RetrieveAPIView):
+    queryset = Category
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
-        return Department.objects.filter(organization__pk=self.kwargs.get('organization_id'))
+        return Category.objects.filter(organization__pk=self.kwargs.get('organization_id'))
+
+
+class UpdateCategoryView(generics.UpdateAPIView):
+    pass
+
+
+class DeleteCategoryView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get_queryset(self):
+        return Category.objects.filter(organization__pk=self.kwargs.get('organization_id'))
