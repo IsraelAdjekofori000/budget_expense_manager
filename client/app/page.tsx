@@ -44,7 +44,7 @@ function TypeStyle({
 }
 
 export default function Home() {
-  const [index, setI] = useState(1);
+  // const [index, setI] = useState(1);
   // setTimeout(() => {
   //   setI((p) => p +30 + index);
   // }, 1000);

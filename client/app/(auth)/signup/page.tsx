@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import apiClient from '@/utils/axios_agent'
-
+import apiClient from "@/utils/axios_agent";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -17,7 +16,7 @@ function SignUp() {
     confirmPassword: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -51,11 +50,12 @@ function SignUp() {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       alert("Form submitted successfully!");
-      const response = apiClient.post("/api/user/register/agent/", formData)
+      const response = apiClient
+        .post("/api/user/register/agent/", formData)
         .then(function (response) {
           console.log(response);
         })
@@ -70,26 +70,25 @@ function SignUp() {
     <div className="w-full h-full flex justify-center items-center">
       <div className="bg-white rounded-xl border-gray-200 border py-4 px-11 w-80">
         <h1 className="text-2xl font-semibold">Sign Up For Free</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
-          {errors.password && <p className="error">{errors.password}</p>}
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
-          {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+            {errors.email && <p className="error">{errors.email}</p>}
+          </div>
+          <div>
+            <label htmlFor="password">Password:</label>
+            <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+            {errors.password && <p className="error">{errors.password}</p>}
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
+            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+          </div>
+          <button type="submit">Sign Up</button>
+        </form>
       </div>
-
     </div>
   );
 }
