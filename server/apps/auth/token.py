@@ -21,7 +21,7 @@ class L2RefreshToken(RefreshToken):
         try:
             super().check_blacklist()
         except TokenError:
-            user_jwts = OutstandingToken.objects.filter(user_id=self.payload[api_settings.USER_ID_CLAIM])
+            user_jwts = OutstandingToken.objects.filter(user__id=self.payload[api_settings.USER_ID_CLAIM])
             BlacklistedToken.objects.bulk_create(
                 [BlacklistedToken(token=token) for token in user_jwts], ignore_conflicts=True
             )

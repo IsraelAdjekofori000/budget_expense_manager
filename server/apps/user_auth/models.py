@@ -14,12 +14,7 @@ class AppUserManager(UserManager, PolymorphicManager):
 class User(AbstractUser, PolymorphicModel):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     email = models.EmailField(_('User active email'), unique=True)
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150)
-    username = models.CharField(max_length=100, blank=True, unique=True)
-    bio = models.CharField(max_length=500, null=True, blank=True)
-    phone_number = models.CharField(max_length=14, null=True, blank=True)
-    profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True, null=True)
+    verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
@@ -38,6 +33,14 @@ class User(AbstractUser, PolymorphicModel):
 
    
 class Agent(User):
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
+    username = models.CharField(max_length=100, blank=True, unique=True)
+    bio = models.CharField(max_length=500, null=True, blank=True)
+    phone_number = models.CharField(max_length=14, null=True, blank=True)
+    profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True,
+                                      null=True)
+
     class Meta:
         verbose_name = _("Agent")
         verbose_name_plural = _("Agents")
@@ -47,6 +50,12 @@ class Vendor(User):
     """
     Vendor/Supplier for a particular organization.
     """
+
+    vendor_name = models.CharField(max_length=100, blank=True, unique=True)
+    bio = models.CharField(max_length=500, null=True, blank=True)
+    phone_number = models.CharField(max_length=14, null=True, blank=True)
+    profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True,
+                                      null=True)
 
     address = models.TextField(_("Address"), blank=True, null=True, help_text=_("Physical address of the vendor."))
     website = models.URLField(_("Website"), blank=True, null=True, help_text=_("Website of the vendor."))

@@ -1,4 +1,4 @@
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer, TokenVerifySerializer
 from ..token import L2RefreshToken
 
 
@@ -9,3 +9,4 @@ class L2TokenRefreshSerializer(TokenRefreshSerializer):
     """
 
     token_class = L2RefreshToken
+
