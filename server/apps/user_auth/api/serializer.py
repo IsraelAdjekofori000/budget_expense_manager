@@ -2,18 +2,19 @@ from rest_framework import serializers
 from ..models import Agent, Vendor, User, Notification
 
 
+class UserSerializer(serializers.Serializer):
+    password = serializers.CharField(max_length=40, write_only=True)
+    email = serializers.EmailField()
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 class AgentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agent
-        fields = ['id', 'username', 'last_name', 'first_name', 'email', 'password', 'profile_image', 'bio',
-                  'phone_number']
-        extra_kwargs = {
-            'password': {'write_only': True},
-            }
-
-    def create(self, validated_data):
-        return Agent.objects.create_user(**validated_data)
+        fields = ['id', 'username', 'last_name', 'first_name', 'profile_image', 'bio', 'phone_number']
 
 
 class VendorSerializer(serializers.ModelSerializer):

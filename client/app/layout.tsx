@@ -1,16 +1,11 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Metadata } from "next";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppin",
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -25,10 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${poppins.variable} antialiased relative w-screen h-screen min-h-screen flex flex-col`}>
+        <div className="w-screen h-screen overflow-hidden fixed -z-10">
+          <div className="rounded-full h-[700px] w-[700px] translate-y-2/4 bg-[#FEB60D] absolute bottom-0 right-0" />
+          <div className="rounded-full h-[700px] w-[700px] -translate-x-32 -translate-y-60 bg-[#05C929] absolute top-0 left-0 " />
+          <div className="absolute w-screen h-screen bg-white/85 backdrop-blur-[150px]" />
+        </div>
+        <header className="w-full h-16 rounded-b-lg fixed">
+          <nav className="mx-16 h-full flex items-center">
+            <h1 className="font-black text-4xl">LOGO</h1>
+          </nav>
+        </header>
+        <main className="flex-1 h-full w-full">{children}</main>
+        <footer className="w-full h-16 rounded-t-lg absolute bottom-0 flex justify-center items-center">
+          <p className="text-gray-600 text-sm">Copyright &copy; 2022 Freepik Company S.L. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );

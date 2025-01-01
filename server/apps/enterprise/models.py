@@ -85,14 +85,10 @@ class OrganizationAssociates(models.Model):
 
 class AssociateDetail(models.Model):
     associate = models.OneToOneField(OrganizationAssociates, on_delete=models.CASCADE, related_name='contract_detail')
-    department = models.ForeignKey('Department', on_delete=models.SET_DEFAULT, default=None, null=True,
-                                   related_name='members')  # default would be changed to a generic department
     role = models.CharField(max_length=100)
-    is_active = models.BooleanField(_("Active Status"), default=True,
-                                    help_text=_("Currently actively employed or on paid leave"))
+    is_active = models.BooleanField(_("Active Status"), default=True)
     start_date = models.DateField(_("Start Date"), auto_now_add=True)
-    description = models.TextField(_("Notes"), null=True, blank=True,
-                             help_text=_("Additional notes or comments about the agent's employment."))
+    description = models.TextField(_("Notes"), null=True, blank=True)
 
     # wage_info =
     # payment_info =
@@ -102,62 +98,32 @@ class AssociateDetail(models.Model):
             return f'{self.associate}'
         return 'empty'
 
-    def clean(self):
-        if self.associate.organization != self.department.organization:
-            raise ValidationError('department must belong to the same organization as associate')
-
     def save(self, *args, **kwargs):
         self.clean()  # Ensure custom validation logic is executed
         super().save(*args, **kwargs)
 
 
-class Department(models.Model):
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='departments',
-                                     help_text=_("organisation this department belong"))
-    name = models.CharField(_('Department Name'), max_length=100)
-    description = models.TextField(_("Department description"))
-    hod = models.ForeignKey(User, help_text=_("Head of department"), related_name='hod_of', on_delete=models.PROTECT)
-# hods = models.ManyToManyField(OrganizationAssociates, through='DepartmentHOD', help_text=_("Head of department"),
-#                                   related_name='hod_of')
+class Category(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='categories')
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    supervisor = models.ForeignKey(User, related_name='supervisor_of', on_delete=models.PROTECT)
 
     # budget_statement =
 
     class Meta:
-        verbose_name = _("Department")
-        verbose_name_plural = _("Departments")
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
         constraints = [
             models.UniqueConstraint(fields=['organization', 'name'],
-                                    name='unique_Department_organization_name')
+                                    name='unique_Category_organization_name')
         ]
-        # permissions = [
-        #     ("can_add_employee", "Can add employee"),
-        #     ("can_remove_employee", "Can remove employee"),
-        #     ("can_view_budget", "Can view budget"),
-        #     ("can_edit_description", "Can edit budget")
-
-        # ]
 
     def __str__(self):
         return self.name
 
-
-# class DepartmentHOD(models.Model):
-#     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-#     organization_employee = models.ForeignKey(OrganizationAssociates, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         unique_together = (('department', 'organization_employee'),)
-#
-#     def clean(self):
-#         super().clean()
-#         valid_hod = (self.organization_employee.organization == self.department.organization and type(
-#             self.organization_employee.associate) == 'Agent')
-#         if not valid_hod:
-#             ValidationError('the user must belong to the organization and must be an agent')
-#
-#     def save(self, *args, **kwargs):
-#         self.full_clean()
-#         super().save(*args, **kwargs)
+    def get_org(self):
+        return self.organization
 
 
 class OrganizationAssociateRequest(models.Model):
