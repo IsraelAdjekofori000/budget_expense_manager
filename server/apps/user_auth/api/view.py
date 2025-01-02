@@ -1,4 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.db import IntegrityError
+from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST, HTTP_200_OK
@@ -46,9 +49,18 @@ class CreateUserView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response('User successfully created')
+        try:
+            serializer.save()
+        except IntegrityError:
+            if User.objects.get(email=serializer.validated_data['email']).is_verified:
+                raise ValidationError('Email has been used')
+        send_mail("Validate Your Email Address",
+                  'Test message',
+                  'testnoreply@gmail.com',
+                  [serializer.validated_data['email']],
+                  fail_silently=False
+                  )
+        return Response({"message": 'Verify email'}, status=HTTP_201_CREATED)
 
 
 class EditUserView(generics.UpdateAPIView):

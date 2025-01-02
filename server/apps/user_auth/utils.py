@@ -17,7 +17,5 @@ def get_anonymous_user(user):
     obj, _ = user.objects.get_or_create(
         password='anonymous_user',
         email='anonymous@user.com',
-        first_name='anonymous',
-        last_name='user',
     )
     return obj
