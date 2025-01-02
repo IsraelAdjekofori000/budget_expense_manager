@@ -1,41 +1,51 @@
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser
 from polymorphic.models import PolymorphicModel, PolymorphicManager
 from django.utils.translation import gettext_lazy as _
 import uuid
 from .utils import profile_image_upload_location, product_image_upload_location
 
 
-class AppUserManager(UserManager, PolymorphicManager):
-    pass
+class AppUserManager(BaseUserManager, PolymorphicManager):
+
+    def create_user(self, email, password=None):
+        email = self.normalize_email(email)
+        user = self.model(email=email, password=make_password(password))
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, password=None):
+        email = self.normalize_email(email)
+        user = self.model(email=email, password=make_password(password), is_staff=True, is_superuser=True)
+        user.save(using=self._db)
+
+        return user
 
 
 class User(AbstractUser, PolymorphicModel):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     email = models.EmailField(_('User active email'), unique=True)
-    verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+
+    username = None
+    first_name = None
+    last_name = None
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-    
+    REQUIRED_FIELDS = []
     objects = AppUserManager()
     
     def __str__(self):
         return self.get_full_name()
         
-    def clean(self):
-        super().clean()
-        # TODO add check for country code  
-        
-        if not self.bio and not self.phone_number and not self.profile_image:
-            raise ValidationError(_('At least one field (bio, phone_number, profile_image) must be filled.'))
 
-   
 class Agent(User):
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
-    username = models.CharField(max_length=100, blank=True, unique=True)
+    username = models.CharField(max_length=100, blank=True)
     bio = models.CharField(max_length=500, null=True, blank=True)
     phone_number = models.CharField(max_length=14, null=True, blank=True)
     profile_image = models.ImageField(_('user media uploads'), upload_to=profile_image_upload_location, blank=True,
