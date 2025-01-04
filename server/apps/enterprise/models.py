@@ -9,7 +9,6 @@ from .constant import (ORGANIZATION_TYPE_CHOICES,
                        INDUSTRY_CHOICES,
                        STATUS_CHOICES,
                        )
-from ..user_auth.models import Notification
 
 User = get_user_model()
 

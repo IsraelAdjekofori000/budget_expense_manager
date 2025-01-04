@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
                 'abstract': False,
             },
-            bases=('user_auth.user',),
+            bases=('user.user',),
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
             ],

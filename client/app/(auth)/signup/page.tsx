@@ -55,7 +55,7 @@ function SignUp() {
     if (validateForm()) {
       alert("Form submitted successfully!");
       const response = apiClient
-        .post("/api/user/register/agent/", formData)
+        .post("/api/user/register/user/", formData)
         .then(function (response) {
           console.log(response);
         })

@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.urls import reverse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
@@ -48,7 +50,7 @@ class BaseTokenCookieView(TokenViewBase):
                 httponly=True,
                 secure=True,
                 samesite='Lax',
-                path='api/auth/refresh-token'
+                path=reverse('token_refresh')
             )
 
         return response
@@ -70,7 +72,7 @@ class RefreshTokenView(BaseTokenCookieView):
     serializer_class = L2TokenRefreshSerializer  # implements revocation policies
 
     def get_auth_data(self, request):
-        return {'refresh': request.COOKIE.get('refresh_token', None)}
+        return {'refresh': request.COOKIES.get('refresh_token', None)}
 
 
 # class VerifyRefreshTokenView(BaseTokenCookieView):

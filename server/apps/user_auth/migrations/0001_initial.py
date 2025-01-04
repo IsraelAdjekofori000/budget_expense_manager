@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=150, verbose_name='last name')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('profile', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user', to='user_auth.userprofile', verbose_name='user profile information')),
+                ('profile', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user', to='user.userprofile', verbose_name='user profile information')),
             ],
             options={
                 'verbose_name': 'user',

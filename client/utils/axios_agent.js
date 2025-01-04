@@ -16,7 +16,7 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await apiClient.post("api/auth/refresh-token");
+        await apiClient.post("api/auth/refresh-token/");
         return apiClient(originalRequest);
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
