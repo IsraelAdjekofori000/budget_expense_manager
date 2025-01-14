@@ -3,11 +3,11 @@ from .api.view import (
     CreateUserView,
     DetailUserView,
     EditUserView, RetrieveNotificationView, ListNotificationView, RetrieveRequestView, ListRequestView,
-    VerifyUserEmailView
+    VerifyUserEmailView, CreateUserTypeView
 )
 
 urlpatterns = [
-    # re_path(r'^register/(?P<user_type>vendor|agent)/$', CreateUserView.as_view(), name='register'),
+    re_path(r'^register/(?P<user_type>vendor|agent)/$', CreateUserTypeView.as_view(), name='user_type'),
     re_path('register/user/', CreateUserView.as_view(), name='register'),
     path('verify-email/', VerifyUserEmailView.as_view(), name='verify_email'),
     path('<uuid:pk>/', DetailUserView.as_view(), name='detail'),

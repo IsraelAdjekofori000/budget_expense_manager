@@ -24,28 +24,19 @@ User = get_user_model()
 # --------------------- USER ------------------------
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-# class CreateUserView(generics.CreateAPIView):
-#     # TESTED
-#
-#     def get_serializer_class(self):
-#         if self.kwargs.get('user_type') == 'agent':
-#             return AgentSerializer
-#         else:
-#             return VendorSerializer
-#
-#     def create(self, request, *args,  **kwargs):
-#         data = request.data
-#         serializer = self.get_serializer(data=data)
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.save()
-#         token = RefreshToken.for_user(user)
-#         response = {
-#             'user': serializer.data,
-#             'refresh': str(token),
-#             'access': str(token.access_token)
-#         }
-#         headers = self.get_success_headers(serializer.data)
-#         return Response(response, status=HTTP_201_CREATED, headers=headers)
+class CreateUserTypeView(generics.CreateAPIView):
+    permission_classes = IsAuthenticated,
+
+    def get_serializer_class(self):
+        if self.kwargs.get('user_type') == 'Agent':
+            return  AgentSerializer
+        return VendorSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.validated_data, status=HTTP_200_OK)
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -64,22 +55,7 @@ class CreateUserView(generics.CreateAPIView):
                       fail_silently=False
                       )
 
-            response = Response({"message": 'Verify email'}, status=HTTP_201_CREATED)
-            access = AccessToken()
-            access['id'] = _id
-            delta = timedelta(minutes=10)
-            access.set_exp(lifetime=delta)
-            response.set_cookie(
-                key='access_token',
-                value=str(access),
-                # expires=datetime.now() + delta,
-                httponly=True,
-                secure=True,
-                samesite='Lax',
-                path=reverse('verify_email')
-            )
-            return response
-
+            return Response({"message": 'Verify email'}, status=HTTP_201_CREATED)
         except IntegrityError:
             raise ValidationError('Email has been used')
 

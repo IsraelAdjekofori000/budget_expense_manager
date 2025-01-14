@@ -71,12 +71,23 @@ function SignUp() {
       <div className="bg-white rounded-xl border-gray-200 border py-4 px-11 w-80">
         <h1 className="text-2xl font-semibold">Sign Up For Free</h1>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+          <div className="input-container">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="
+              input-area outline-none h-10 border border-black rounded-md px-5
+              "
+            />
+            <label htmlFor="email" className="input-label pointer-events-none">
+              Email:
+            </label>
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="password">Password:</label>
             <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
             {errors.password && <p className="error">{errors.password}</p>}
@@ -85,7 +96,7 @@ function SignUp() {
             <label htmlFor="confirmPassword">Confirm Password:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-          </div>
+          </div> */}
           <button type="submit">Sign Up</button>
         </form>
       </div>
