@@ -7,6 +7,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        projOrange: "#ff7b00",
       },
       keyframes: {
         typewriter: {
@@ -17,10 +18,18 @@ export default {
           "0%": { color: "black" },
           "100%": { color: "transparent" },
         },
+        shake: {
+          "0%": { transform: "translateX(0)" },
+          " 25%": { transform: "translateX(-5px)" },
+          " 50%": { transform: "translateX(5px)" },
+          " 75%": { transform: "translateX(-5px)" },
+          "100%": { transform: "translateX(0) " },
+        },
       },
       animation: {
         typewriter: "typewriter 4s steps(40, end) 1s forwards",
         blink: "blink 0.8s steps(2, start) infinite",
+        shake: "shake 0.5s ease-in-out",
       },
     },
   },
