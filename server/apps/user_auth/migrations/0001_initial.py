@@ -18,15 +18,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='UserProfile',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bio', models.CharField(blank=True, max_length=500, null=True)),
-                ('phone_number', models.CharField(blank=True, max_length=14, null=True)),
-                ('profile_image', models.ImageField(blank=True, null=True, upload_to=apps.user_auth.models.profile_image_upload_location, verbose_name='user media uploads')),
-            ],
-        ),
+
         migrations.CreateModel(
             name='User',
             fields=[
@@ -43,7 +35,6 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=150, verbose_name='last name')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('profile', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user', to='user.userprofile', verbose_name='user profile information')),
             ],
             options={
                 'verbose_name': 'user',

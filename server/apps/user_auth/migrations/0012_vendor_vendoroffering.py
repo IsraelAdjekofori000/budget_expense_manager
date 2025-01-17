@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Vendors',
                 'permissions': [],
             },
-            bases=('user.user',),
+            bases=('user_auth.user',),
             managers=[
                 ('objects', apps.user_auth.models.AppUserManager()),
             ],
@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
                 ('description', models.TimeField(blank=True, null=True)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('per', models.CharField(max_length=50)),
-                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='offerings', to='user.vendor')),
+                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='offerings', to='user_auth.vendor')),
             ],
         ),
     ]
