@@ -64,7 +64,7 @@ function SignUp() {
         .post("/api/user/register/user/", formData)
         .then(function (response) {
           console.log(response);
-          router.push("/ver");
+          router.push("/check-email");
         })
         .catch(function (error) {
           console.log(error);
@@ -76,7 +76,7 @@ function SignUp() {
 
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <div className="bg-white/80 shadow-lg rounded-xl border-gray-200 border py-4 px-9 w-80 space-y-8">
+      <div className="bg-white/50 shadow-lg rounded-xl border-gray-200 border py-4 px-9 w-80 space-y-8">
         <h1 className="text-2xl font-semibold">Sign Up For Free</h1>
 
         {errors.nonField ? (

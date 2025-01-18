@@ -92,7 +92,6 @@ class VerifyUserEmailView(APIView):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        print(request.COOKIES.get('access_token'))
         verification_id = request.query_params.get('id')
 
         if verification_id:
