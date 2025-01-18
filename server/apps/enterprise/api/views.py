@@ -12,8 +12,8 @@ from base.utils import value_or_default
 from .serializer import (OrganizationSerializer,
                          OrganizationAdminSerializer, CategorySerializer,
                          AssociateRequestSerializer, OrganizationAssociateSerializer,
-                         )
-from ..permission import IsAdmin, IsOwner
+                       )
+from ..permission import IsAdmin
 from ..models import Organization, OrganizationAssociateRequest, Category
 
 

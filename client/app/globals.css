@@ -5,3 +5,29 @@
 body {
   font-family: var(--font-poppin), sans-serif;
 }
+
+@layer components {
+  .input-container {
+    position: relative;
+    height: fit-content;
+  }
+  .input-area {
+    width: 100%;
+    /* line-height: px; */
+  }
+  .input-label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    line-height: 12px;
+    transform: translateY(-50%);
+  }
+}
+
+.input-area:focus {
+  color: blue;
+  height: 30px;
+  /* line-height: 30px; */
+  transform: translate(-15px, -16px) scale(0.88);
+  z-index: 100;
+}

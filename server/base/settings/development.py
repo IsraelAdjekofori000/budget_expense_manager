@@ -75,5 +75,15 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Email backend configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Replace with your Redis server address and DB number
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            # 'PASSWORD': 'yourpassword',  # Uncomment if your Redis server requires a password
+        },
+        'KEY_PREFIX': 'myapp',  # Optional: Add a prefix to avoid key collisions
+    }
+}
 

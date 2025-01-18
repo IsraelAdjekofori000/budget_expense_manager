@@ -11,10 +11,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='user',
-            name='signup_stage',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='user_auth.stages'),
-            preserve_default=False,
-        ),
+
     ]

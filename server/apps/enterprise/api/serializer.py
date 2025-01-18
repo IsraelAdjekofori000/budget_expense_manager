@@ -61,7 +61,7 @@ class OrganizationAssociateAdminSerializer(serializers.ModelSerializer):
 class OrganizationAdminSerializer(serializers.ModelSerializer):
     vendor_count = serializers.SerializerMethodField()
     agent_count = serializers.SerializerMethodField()
-    admins = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.instance_of(Agent))
+    # admins = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.instance_of(Agent))
     associates = OrganizationAssociateAdminSerializer(many=True, source='org_associates')
 
     class Meta:

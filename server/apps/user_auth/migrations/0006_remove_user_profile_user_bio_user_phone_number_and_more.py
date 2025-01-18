@@ -12,10 +12,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='user',
-            name='profile',
-        ),
+
         migrations.AddField(
             model_name='user',
             name='bio',
@@ -35,8 +32,5 @@ class Migration(migrations.Migration):
             model_name='user',
             name='id',
             field=models.UUIDField(default=uuid.UUID('ca704ac9-1fe7-469b-ab86-620e3a858949'), editable=False, primary_key=True, serialize=False, unique=True),
-        ),
-        migrations.DeleteModel(
-            name='UserProfile',
         ),
     ]

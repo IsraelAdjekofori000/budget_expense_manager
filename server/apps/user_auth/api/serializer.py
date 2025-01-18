@@ -1,5 +1,8 @@
+import uuid
+
 from django.db import IntegrityError
 from rest_framework import serializers
+from django.core.cache import cache
 from rest_framework.exceptions import ValidationError
 
 from ..models import Agent, Vendor, User, Notification
@@ -10,7 +13,12 @@ class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        if User.objects.filter(email=validated_data['email']).exists():
+            raise IntegrityError
+        else:
+            _id = uuid.uuid4()
+            cache.set(str(_id), validated_data,  timeout=600)
+            return str(_id)
 
 
 class AgentSerializer(serializers.ModelSerializer):
@@ -34,6 +42,20 @@ class VendorSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Vendor.objects.create_user(**validated_data)
+
+
+class EmailVerificationSerializer(serializers.Serializer):
+    verification_id = serializers.CharField()
+
+    def validate(self, attrs):
+        if not cache.get(attrs['verification_id']):
+            raise ValidationError('Verification ID not valid')
+        return attrs
+
+    def create(self, validated_data):
+        credential = cache.get(validated_data['verification_id'])
+        cache.delete(validated_data['verification_id'])
+        return User.objects.create_user(**credential)
 
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

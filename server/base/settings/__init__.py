@@ -136,11 +136,19 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# settings.__init__.py
+
 ENVIRONMENT = os.environ.get('ENVIRONMENT')
 
 if ENVIRONMENT == 'dev':
     # developer mode
     from .development import *
+    
 elif ENVIRONMENT == 'prod':
+    # production mode
     from .production import *
+    
+else:
+    # testing mode
+    from .test import *
 
