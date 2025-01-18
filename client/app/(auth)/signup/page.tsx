@@ -52,7 +52,7 @@ function SignUp() {
       newErrors.confirmPassword = "Passwords do not match.";
     }
 
-    setErrors(newErrors);
+    setErrors((error) => ({ ...error, ...newErrors }));
     return isValid;
   };
 

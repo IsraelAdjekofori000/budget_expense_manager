@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import { TypeStyle } from "@/utils/ui/utility";
 
 export default function Home() {
